@@ -115,9 +115,9 @@ class LatentData(GenericType):
 
     def __repr__(self) -> str:
         if self.computed:
-            return f"DelayedData(computed={self.computed}, datatype={type(self.data)})"
+            return f"LatentData(computed={self.computed}, datatype={type(self.data)})"
         else:
-            return f"DelayedData(computed={self.computed})"
+            return f"LatentData(computed={self.computed})"
 
     @property
     def age(self) -> Optional[float]:
