@@ -11,7 +11,7 @@ authors = [
 description = "A package for lazy evaluation and caching to optimize scientific analysis workflows."
 readme = "README.md"
 requires-python = ">=3.7"
-dependencies = []
+dependencies = ["numpy", "networkx", "matplotlib"]
 license = "MIT"
 keywords = ["lazy", "evaluation", "computation", "caching", "dependency", "tracking"]
 classifiers = [
