@@ -26,6 +26,25 @@ LatenPy is a Python package that provides elegant lazy evaluation and computatio
 pip install latenpy
 ```
 
+## Documentation
+
+Comprehensive documentation is available at [Read the Docs](https://latenpy.readthedocs.io/), including:
+
+- **Quick Start Guide**: Get up and running with basic examples
+- **Core Concepts**: Learn about Latent Objects, Dependency Tracking, and Caching
+- **API Reference**: Detailed documentation of all classes and functions
+- **Advanced Usage**: Topics like cache management, dependency graph analysis, and performance optimization
+- **Examples**: Real-world examples including scientific computing and data processing pipelines
+
+To build the documentation locally:
+
+```bash
+cd docs
+make html
+```
+
+The built documentation will be available in `docs/build/html/index.html`.
+
 ## Quick Start
 
 Here's a simple example showing how to use LatenPy:
@@ -122,7 +141,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## License
 
 This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
-
-## Documentation
-
-Coming soon...
