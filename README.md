@@ -2,6 +2,16 @@
 
 LatenPy is a Python package that provides elegant lazy evaluation and computation caching with automatic dependency tracking. It's designed to help you optimize complex computational workflows by deferring expensive calculations until they're needed and caching results efficiently.
 
+[![PyPI version](https://badge.fury.io/py/latenpy.svg)](https://badge.fury.io/py/latenpy)
+[![Documentation Status](https://readthedocs.org/projects/latenpy/badge/?version=latest)](https://latenpy.readthedocs.io/en/latest/?badge=latest)
+[![Python Versions](https://img.shields.io/pypi/pyversions/latenpy.svg)](https://pypi.org/project/latenpy/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Tests](https://github.com/landoskape/latenpy/actions/workflows/tests.yml/badge.svg)](https://github.com/landoskape/latenpy/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/landoskape/latenpy/branch/main/graph/badge.svg)](https://codecov.io/gh/landoskape/latenpy)
+
+[Full Documentation](https://latenpy.readthedocs.io/) | [GitHub](https://github.com/landoskape/latenpy) | [PyPI](https://pypi.org/project/latenpy/)
+
+
 ## Features
 
 - 🦥 **Lazy Evaluation**: Defer computations until their results are actually needed
