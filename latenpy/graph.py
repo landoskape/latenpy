@@ -32,7 +32,7 @@ def correct_computed_status(G: DiGraph) -> None:
 
     # Clear data from dependent nodes so they'll be recomputed
     for node in dependents:
-        G.nodes[node]["delayed_obj"].ddata.clear()
+        G.nodes[node]["delayed_obj"].latent_data.clear()
 
 
 def analyze_dependencies(G: DiGraph) -> Dict[str, Any]:
