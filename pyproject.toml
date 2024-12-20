@@ -10,7 +10,7 @@ authors = [
 ]
 description = "A package for lazy evaluation and caching to optimize scientific analysis workflows."
 readme = "README.md"
-requires-python = ">=3.6"
+requires-python = ">=3.7"
 dependencies = []
 license = "MIT"
 keywords = ["lazy", "evaluation", "computation", "caching", "dependency", "tracking"]
@@ -19,7 +19,6 @@ classifiers = [
     "Intended Audience :: Developers",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",

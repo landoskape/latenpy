@@ -54,12 +54,8 @@ Areas for improvement:
   - Comparison (<, >, <=, >=, ==, !=)
   - Bitwise (&, |, ^, <<, >>)
   - Boolean (and, or, not)
-- To do the above, will also need to implement a way to implement latent inline (with lambda?)
-  - Actually, can always just wrap the function in latent inline too...
-    - Like: latent(some_function, cache_data=True)(arg1, arg2, **kwargs)
-- If a dependency is updated, it will force the computation to be re-run. However, if two things
-  depend on it, the second one that is recalled won't know that it should be recomputed. This is
-  why we need a master graph....
+- We should make sure that the latent objects are computed when relevant!
+  - 
 """
 
 from .latent import latent

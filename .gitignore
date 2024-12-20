@@ -1,3 +1,6 @@
+# For hiding testing files from the repo
+hidden/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
