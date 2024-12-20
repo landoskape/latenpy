@@ -115,4 +115,4 @@ This project is licensed under the GNU General Public License v3.0 - see the [LI
 
 ## Documentation
 
-[Add link to full documentation when available]
+Coming soon...
