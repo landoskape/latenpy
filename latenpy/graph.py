@@ -38,18 +38,32 @@ def correct_computed_status(G: DiGraph) -> None:
 def analyze_dependencies(G: DiGraph) -> Dict[str, Any]:
     """Analyze the computation graph's dependencies and structure.
 
+    Parameters
+    ----------
+    G : DiGraph
+        The directed graph to analyze.
+
     Returns
     -------
     Dict[str, Any]
-        Dictionary containing analysis metrics including:
-        - depth: Maximum depth of the computation graph
-        - n_nodes: Total number of computation nodes
-        - n_edges: Total number of dependencies
-        - leaf_nodes: Number of nodes with no dependencies
-        - root_nodes: Number of nodes with no dependents
-        - is_cyclic: Whether the graph contains cycles
-        - max_in_degree: Maximum number of direct dependencies for any node
-        - max_out_degree: Maximum number of direct dependents for any node
+        A dictionary containing the following metrics:
+        
+        - depth : int
+            Maximum depth of the computation graph
+        - n_nodes : int
+            Total number of computation nodes
+        - n_edges : int
+            Total number of dependencies
+        - leaf_nodes : int
+            Number of nodes with no dependencies
+        - root_nodes : int
+            Number of nodes with no dependents
+        - is_cyclic : bool
+            Whether the graph contains cycles
+        - max_in_degree : int
+            Maximum number of direct dependencies for any node
+        - max_out_degree : int
+            Maximum number of direct dependents for any node
     """
     # Get root nodes (those with no predecessors)
     root_nodes = [node for node in G.nodes() if G.in_degree(node) == 0]

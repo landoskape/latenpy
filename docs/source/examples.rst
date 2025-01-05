@@ -46,8 +46,9 @@ Nested Data Structures
     total = sum_results(data)
     result = total.compute()  # 12
 
-LatenPy can inspect dependencies and therefore unpack latent computations in nested data
-structures.
+For example, you can nest latent computations in lists, dictionaries, and other data
+structures. LatenPy will automatically compute whatever is needed to get the final output
+and cache the intermediate results.
 
 Scientific Computing Examples
 --------------------------
@@ -79,14 +80,16 @@ Data Processing Pipeline
     result = cleaned.compute()
 
 LatenPy is useful for defining scientific computing pipelines, and only performing
-computations when needed. One particular use case is to define standard pipelines for
-data processing, but comment out any components that are not needed at a particular
-moment. For example, suppose your pipeline has several endpoints with a number of shared
-intermediate variables. You can define the pipeline once, and then comment out all but
-one endpoint. This way, LatenPy will automatically compute the necessary intermediate
-variables and exclude unnecessary computations. Therefore, you'll be able to explore the
-endpoint of interest, but maintain the integrity of all the code required to get to that
-point. 
+computations when needed. This is useful for having all the code and processing steps
+defined and accessible, but only perform whichever computations are needed right now or
+for a particular task. 
+
+For example, you can define a standard pipeline for data processing that has several
+endpoints with a number of shared intermediate variables. Then, you can run ``compute``
+on a single endpoint variable. LatenPy will automatically compute the necessary
+intermediate variables and exclude unnecessary computations. This way, you'll be able to
+use your pipeline to explore a particular endpoint, but avoid performing unnecessary
+computations. 
 
 Parameter Studies
 ---------------
@@ -114,11 +117,14 @@ Smart Recomputation
     model.update_kwargs(learning_rate=0.02)
     new_score = result.compute()  # Automatically recomputes both fit_model and evaluate
 
-Unlike frameworks focused on distributed computing, LatenPy provides granular control
-over parameter updates and automatically handles dependency-based recomputation. This is
-particularly useful for parameter studies and interactive model optimization. For
-example, suppose your scientific computing pipeline has a number of parameters that you
-want to study such as parameters related to filtering timeseries data. You can define the
+LatenPy maintains a dependency graph that tracks the relationships between latent
+computations. This way, it allows you to update parameters of a particular computation
+and automatically detect which variables are affected by the update. 
+
+LatenPy's dependency tracking is particularly useful for exploring how changes to one
+the way one computation is performed affect other results (including model optimization).
+Suppose your scientific computing pipeline has a number of parameters that you want to
+study such as parameters related to filtering timeseries data. You can define the
 pipeline once, then compute and plot the final result. Then, update any parameter you
 want to study, and the pipeline will automatically detect which components need to be
 recomputed, therefore making it easy and efficient to explore the effect of each

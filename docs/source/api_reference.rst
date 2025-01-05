@@ -1,13 +1,10 @@
 API Reference
 ============
 
-Decorators
----------
+Core Components
+--------------
 
 .. autofunction:: latenpy.latent
-
-Latent Class
------------
 
 .. autoclass:: latenpy.Latent
    :members:
