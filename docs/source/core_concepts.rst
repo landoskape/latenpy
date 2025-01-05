@@ -60,6 +60,43 @@ Example:
     # You can visualize the dependency graph
     y.visualize()
 
+When the parameters of a latent object are changed, the dependency graph is updated
+automatically. You can update the parameters of a latent object by using the ``update``
+methods. 
+
+.. code-block:: python
+
+    @latent
+    def add(a, b, offset=0):
+        return a + b + offset
+
+    @latent
+    def multiply(a, b):
+        return a * b
+
+    # Creates a dependency chain
+    x = multiply(2, 3)
+    y = add(x, 4, offset=0)
+
+    result = y.compute()
+    print(result)
+
+    # Update the parameters of the latent object
+    x.update_args(4, 5)
+    result = y.compute()
+    print(result)
+
+    # You can also update the keyword arguments of a latent object
+    x.update_kwargs(offset=1)
+    result = y.compute()
+    print(result)
+
+    # You can even update the function itself
+    x.update_func(lambda a, b: a ** b)
+    result = y.compute()
+    print(result)
+
+
 Caching System
 ------------
 
@@ -70,7 +107,6 @@ Results are automatically cached when computed:
 
 - Cached results are reused when possible
 - Cache is invalidated when dependencies change
-- Memory efficient - only keeps necessary results
 
 Cache Control
 ~~~~~~~~~~~
@@ -84,31 +120,6 @@ You can control caching behavior:
 
     # Check if result is cached
     is_cached = bool(result.latent_data)
-
-Computation Control
------------------
-
-Manual Control
-~~~~~~~~~~~~
-
-You control when computations happen:
-
-.. code-block:: python
-
-    # Define computation
-    result = complex_calculation(data)
-
-    # Nothing happens until...
-    value = result.compute()  # Computation occurs here
-
-Automatic Dependencies
-~~~~~~~~~~~~~~~~~~~
-
-Dependencies are handled automatically:
-
-- When a dependency changes, dependent results are recomputed
-- Unchanged results remain cached
-- Optimal computation order is determined automatically
 
 Best Practices
 ------------

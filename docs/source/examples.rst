@@ -21,7 +21,12 @@ Simple Arithmetic
 
     # Chain operations
     result = add(multiply(2, 3), multiply(4, 5))
-    print(result.compute())  # 26
+    print(result.compute())  # 26 - takes a bit of time
+    print(result.compute())  # 26 - but is cached so it's almost instant
+
+LatenPy automatically tracks dependencies and caches results, so the second compute()
+call is almost instant. This is a simple example, but LatenPy can handle much more
+complex computations.
 
 Nested Data Structures
 ~~~~~~~~~~~~~~~~~~~~
@@ -41,32 +46,11 @@ Nested Data Structures
     total = sum_results(data)
     result = total.compute()  # 12
 
+LatenPy can inspect dependencies and therefore unpack latent computations in nested data
+structures.
+
 Scientific Computing Examples
 --------------------------
-
-Matrix Operations
-~~~~~~~~~~~~~~
-
-.. code-block:: python
-
-    import numpy as np
-    from latenpy import latent
-
-    @latent
-    def matrix_multiply(A, B):
-        return np.dot(A, B)
-
-    @latent
-    def matrix_inverse(A):
-        return np.linalg.inv(A)
-
-    # Create sample matrices
-    A = np.array([[1, 2], [3, 4]])
-    B = np.array([[5, 6], [7, 8]])
-
-    # Define computation chain
-    result = matrix_multiply(matrix_inverse(A), B)
-    print(result.compute())
 
 Data Processing Pipeline
 ~~~~~~~~~~~~~~~~~~~~~
@@ -94,64 +78,120 @@ Data Processing Pipeline
     # Execute when needed
     result = cleaned.compute()
 
+LatenPy is useful for defining scientific computing pipelines, and only performing
+computations when needed. One particular use case is to define standard pipelines for
+data processing, but comment out any components that are not needed at a particular
+moment. For example, suppose your pipeline has several endpoints with a number of shared
+intermediate variables. You can define the pipeline once, and then comment out all but
+one endpoint. This way, LatenPy will automatically compute the necessary intermediate
+variables and exclude unnecessary computations. Therefore, you'll be able to explore the
+endpoint of interest, but maintain the integrity of all the code required to get to that
+point. 
+
 Parameter Studies
 ---------------
 
-Grid Search Example
+Smart Recomputation
 ~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
     @latent
-    def create_model(param1, param2):
-        return {'param1': param1, 'param2': param2}
+    def fit_model(X, y, learning_rate):
+        # Expensive model fitting
+        return model_parameters
 
     @latent
-    def evaluate_model(model, data):
-        # Simulate model evaluation
-        p1, p2 = model['param1'], model['param2']
-        return p1 * data + p2
+    def evaluate(model_params, test_data):
+        return accuracy_score(test_data, predict(model_params))
 
-    # Create parameter grid
-    param1_values = [1, 2, 3]
-    param2_values = [0.1, 0.2, 0.3]
-    test_data = np.array([1, 2, 3, 4, 5])
+    # Initial computation
+    model = fit_model(X_train, y_train, lr=0.01)
+    result = evaluate(model, test_data)
+    first_score = result.compute()
 
-    # Create evaluation grid
-    results = {}
-    for p1 in param1_values:
-        for p2 in param2_values:
-            model = create_model(p1, p2)
-            results[(p1, p2)] = evaluate_model(model, test_data)
+    # Update learning rate - only recomputes affected nodes
+    model.update_kwargs(learning_rate=0.02)
+    new_score = result.compute()  # Automatically recomputes both fit_model and evaluate
 
-    # Compute all results
-    evaluated = {k: v.compute() for k, v in results.items()}
+Unlike frameworks focused on distributed computing, LatenPy provides granular control
+over parameter updates and automatically handles dependency-based recomputation. This is
+particularly useful for parameter studies and interactive model optimization. For
+example, suppose your scientific computing pipeline has a number of parameters that you
+want to study such as parameters related to filtering timeseries data. You can define the
+pipeline once, then compute and plot the final result. Then, update any parameter you
+want to study, and the pipeline will automatically detect which components need to be
+recomputed, therefore making it easy and efficient to explore the effect of each
+parameter on your pipeline. 
 
-Visualization Example
-------------------
 
-Plotting with Caching
-~~~~~~~~~~~~~~~~~~~
+Visualization Tools
+-------------------
+
+Dependency Graph Analysis
+~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
-    import matplotlib.pyplot as plt
+    from latenpy import latent, visualize
 
     @latent
-    def generate_data(n_points):
-        return np.random.normal(0, 1, n_points)
+    def preprocess(data):
+        return data * 2
 
     @latent
-    def create_histogram(data, bins=50):
-        plt.figure()
-        plt.hist(data, bins=bins)
-        plt.title('Histogram of Random Data')
-        return plt.gcf()
+    def analyze(preprocessed, threshold):
+        return preprocessed[preprocessed > threshold]
 
-    # Create visualization pipeline
-    data = generate_data(1000)
-    hist = create_histogram(data)
+    @latent
+    def aggregate(analyzed_data):
+        return analyzed_data.mean()
 
-    # Show plot
-    fig = hist.compute()
-    plt.show() 
+    # Create computation chain
+    result = aggregate(analyze(preprocess(raw_data), threshold=5))
+
+    # Visualize computation graph with status
+    G = result.get_dependency_graph()
+    visualize(G)  # Shows computed vs uncached vs needs-recomputation nodes
+
+    # Get detailed computation statistics
+    stats = result.latent_data.stats
+    print(stats)  # Shows compute count, access patterns, caching info
+
+LatenPy's visualization tools provide immediate insight into computation status,
+dependencies, and performance metrics. This transparency is invaluable for debugging
+complex computational workflows and understanding resource usage patterns.
+
+Memory Management
+--------------
+
+.. code-block:: python
+
+    @latent(disable_cache=True)
+    def generate_large_matrix(size):
+        return np.random.random((size, size))
+
+    @latent
+    def process_chunk(matrix, start, end):
+        return matrix[start:end].sum()
+
+    # Process large data in chunks without holding everything in memory
+    matrix = generate_large_matrix(10000)
+    chunk_size = 1000
+    results = [
+        process_chunk(matrix, i, i+chunk_size)
+        for i in range(0, 10000, chunk_size)
+    ]
+
+    # Process one at a time, clearing cache as we go
+    for result in results:
+        value = result.compute()
+        process_value(value)
+        result.clear_cache()  # Explicitly manage memory
+
+LatenPy provides explicit control over caching and memory management, allowing you to 
+handle large datasets efficiently in memory-constrained environments. While distributed 
+computing frameworks excel at processing big data across clusters, LatenPy optimizes for
+local scientific computing workflows where memory management is critical. This is
+particularly useful for large datasets that are not feasible to load into memory all at
+once but that you want to have "at your fingertips" for interactive exploration. 
