@@ -58,7 +58,6 @@ User Guide
    core_concepts
    api_reference
    examples
-   advanced_usage
 
 Core Concepts
 ------------
