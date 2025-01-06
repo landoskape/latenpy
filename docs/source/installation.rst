@@ -30,19 +30,7 @@ Requirements
 -----------
 LatenPy requires:
 
-* Python >= 3.7
+* Python >= 3.9
 * numpy
 * networkx
 * matplotlib
-
-Compatibility
-------------
-LatenPy is tested on Python versions:
-
-* 3.7
-* 3.8
-* 3.9
-* 3.10
-* 3.11
-* 3.12
-* 3.13
