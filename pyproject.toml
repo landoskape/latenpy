@@ -34,6 +34,7 @@ test = [
 
 [project.urls]
 Homepage = "https://github.com/landoskape/latenpy"
+Documentation = "https://latenpy.readthedocs.io/en/latest/"
 
 [tool.hatch.build]
 include = ["latentpy"]
